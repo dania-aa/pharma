@@ -114,7 +114,7 @@ def seed():
                         :start_date, :primary_completion_date, :completion_date, :duration_days,
                         :has_results, :primary_outcome_measure, :primary_outcome_timeframe,
                         :locations_count, :countries, :eligibility_min_age, :eligibility_max_age,
-                        :eligibility_gender, :outcome_success, :outcome_confidence, :raw_json::jsonb
+                        :eligibility_gender, :outcome_success, :outcome_confidence, CAST(:raw_json AS JSONB)
                     ) ON CONFLICT (nct_id) DO NOTHING
                 """), t)
                 inserted += 1

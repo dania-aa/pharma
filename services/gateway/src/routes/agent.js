@@ -4,7 +4,7 @@ const { chatLimiter } = require("../middleware/rateLimiter");
 const router = express.Router();
 
 const AGENT_URL = process.env.AGENT_SERVICE_URL || "http://agent:8002";
-const agent = axios.create({ baseURL: AGENT_URL, timeout: 120000 });
+const agent = axios.create({ baseURL: AGENT_URL, timeout: 300000 });
 
 router.post("/chat", chatLimiter, async (req, res, next) => {
   try {

@@ -105,12 +105,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-          cache-dependency-path: services/gateway/package-lock.json
-
       - name: Install dependencies
         working-directory: services/gateway
-        run: npm ci
+        run: npm install
 
       - name: Run tests
         working-directory: services/gateway
@@ -128,11 +125,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         working-directory: frontend
-        run: npm ci
+        run: npm install
 
       - name: Build
         working-directory: frontend

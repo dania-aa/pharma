@@ -13,15 +13,6 @@ from tenacity import retry, stop_after_attempt, wait_exponential
 
 from config import settings
 
-CT_FIELDS = (
-    "NCTId,BriefTitle,BriefSummary,OverallStatus,Phase,StudyType,"
-    "Condition,InterventionType,InterventionName,"
-    "LeadSponsorName,LeadSponsorClass,"
-    "EnrollmentCount,EnrollmentType,ArmGroupCount,"
-    "StartDate,PrimaryCompletionDate,CompletionDate,"
-    "HasResults,PrimaryOutcomeMeasure,PrimaryOutcomeTimeFrame,"
-    "LocationCountry,EligibilityMinimumAge,EligibilityMaximumAge,EligibilitySex"
-)
 
 COMPLETED_STATUSES = {"COMPLETED"}
 FAILED_STATUSES = {"TERMINATED", "WITHDRAWN", "SUSPENDED"}
@@ -228,8 +219,7 @@ def stream_trials(
     """
     params = {
         "format": "json",
-        "pageSize": min(settings.batch_size, 1000),
-        "fields": CT_FIELDS,
+        "pageSize": min(settings.batch_size, 100),
     }
     if query:
         params["query.term"] = query

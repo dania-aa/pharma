@@ -154,7 +154,7 @@ def train():
                     (model_version, accuracy, precision_score, recall_score, f1_score,
                      auc_roc, n_train, n_test, feature_importance)
                 VALUES
-                    (:version, :acc, :prec, :rec, :f1, :auc, :n_train, :n_test, :fi::jsonb)
+                    (:version, :acc, :prec, :rec, :f1, :auc, :n_train, :n_test, CAST(:fi AS JSONB))
             """),
             {
                 "version": settings.model_version,

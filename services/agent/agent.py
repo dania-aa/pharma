@@ -11,7 +11,7 @@ Graph structure:
 import json
 from typing import Annotated, TypedDict
 
-from langchain_aws import ChatBedrock
+from langchain_groq import ChatGroq
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, SystemMessage
 from langchain_core.prompts import ChatPromptTemplate
 from langgraph.graph import END, START, StateGraph
@@ -68,10 +68,10 @@ class AgentState(TypedDict):
 # ─── Build graph ─────────────────────────────────────────────────────────────
 
 def build_agent():
-    llm = ChatBedrock(
-        model_id=settings.aws_bedrock_model_id,
-        region_name=settings.aws_region,
-        model_kwargs={"max_tokens": 4096, "temperature": 0},
+    llm = ChatGroq(
+        model=settings.groq_model,
+        api_key=settings.groq_api_key,
+        temperature=0,
     )
 
     llm_with_tools = llm.bind_tools(ALL_TOOLS)

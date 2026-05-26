@@ -9,7 +9,6 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-COPY ../../database/schema.sql /app/../../database/schema.sql 2>/dev/null || true
 
 ENV PYTHONUNBUFFERED=1
 

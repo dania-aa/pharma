@@ -50,10 +50,11 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
       interval: 15s
-      timeout: 5s
+      timeout: 10s
       retries: 5
+      start_period: 30s
 
   # ── Model Training (one-shot) ─────────────────────────────────────────────
   train:
@@ -78,10 +79,8 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgresql://trialmind:trialmind_secret@postgres:5432/trialmind}
       ML_SERVICE_URL: http://ml:8001
-      AWS_REGION: ${AWS_REGION:-us-east-1}
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
-      AWS_BEDROCK_MODEL_ID: ${AWS_BEDROCK_MODEL_ID:-anthropic.claude-3-5-sonnet-20241022-v2:0}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_MODEL: ${GROQ_MODEL:-llama-3.1-8b-instant}
     ports:
       - "8002:8002"
     depends_on:
@@ -90,10 +89,11 @@ services:
       ml:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8002/health')"]
       interval: 15s
-      timeout: 5s
+      timeout: 10s
       retries: 5
+      start_period: 30s
 
   # ── API Gateway ───────────────────────────────────────────────────────────
   gateway:
@@ -112,10 +112,11 @@ services:
       agent:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000/health', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))\""]
       interval: 15s
-      timeout: 5s
+      timeout: 10s
       retries: 5
+      start_period: 15s
 
   # ── Frontend ──────────────────────────────────────────────────────────────
   frontend:
