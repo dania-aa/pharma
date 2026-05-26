@@ -103,9 +103,9 @@ async def chat(req: ChatRequest):
         conn.execute(
             text("""
                 INSERT INTO conversations (id, title, messages, updated_at)
-                VALUES (:id, :title, :messages::jsonb, NOW())
+                VALUES (:id, :title, CAST(:messages AS JSONB), NOW())
                 ON CONFLICT (id) DO UPDATE
-                SET messages = :messages::jsonb, updated_at = NOW()
+                SET messages = CAST(:messages AS JSONB), updated_at = NOW()
             """),
             {
                 "id": conv_id,
